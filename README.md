@@ -1,10 +1,10 @@
 # Student Assistant App  
 
-Student Assistant App is a mobile and server-side solution designed to help students efficiently manage their academic schedules, receive real-time notifications, and stay up to date with important university events. The system consists of an Android mobile application and a Django-based backend, ensuring seamless communication and automation of notifications.  
+Student Program App is a mobile solution designed to help students efficiently manage their academic schedules, receive real-time notifications, and stay up to date with important university events. The system consists of an Android mobile application and a Django-based backend, ensuring seamless communication and automation of notifications.  
 
 ## Mobile Application  
 
-The **Student Assistant App** is an Android application developed using **Java** and the **Android SDK**. The application provides students with a structured way to keep track of their class schedules, upcoming deadlines, and university announcements. By integrating Firebase Cloud Messaging (FCM) and REST API communication, the app ensures a smooth user experience with real-time updates.  
+The **Student Program App** is an Android application developed using **Java** and the **Android SDK**. The application provides students with a structured way to keep track of their class schedules, upcoming deadlines, and university announcements. By integrating Firebase Cloud Messaging (FCM) and REST API communication, the app ensures a smooth user experience with real-time updates.  
 
 ### Features  
 - **User Authentication** – Secure registration and login system using Firebase Authentication, allowing users to access their academic schedules and notifications with an email and password.  
