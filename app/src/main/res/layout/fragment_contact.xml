@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.contacts.ContactFragment">
+
+    <TextView
+        android:id="@+id/text_slideshow"
+        android:layout_width="94dp"
+        android:layout_height="5dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.61" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Първи, Втори корпус и общежития"
+                android:gravity="center"
+                android:paddingTop="5pt"
+                android:fontFamily="@font/alex_brush"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="се намират на бул. „Санкт Петербург“ 63"
+                android:gravity="center"
+                android:paddingTop="5pt"
+                android:paddingBottom="5pt"
+                android:fontFamily="@font/alex_brush"
+                android:textSize="15dp"
+                />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="400dp"
+                android:layout_height="325dp"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:gravity="center"
+                android:src="@drawable/vtori"
+
+                app:layout_constraintVertical_bias="0.456" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Трети и четвърти корпус"
+                android:gravity="center"
+                android:paddingTop="20pt"
+                android:fontFamily="@font/alex_brush"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Сградата се намира в централната градска част, между Централния площад и Сточна гара."
+                android:gravity="center"
+                android:paddingTop="5pt"
+                android:paddingBottom="5pt"
+                android:fontFamily="@font/alex_brush"
+                android:textSize="15dp"
+                />
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="400dp"
+                android:layout_height="325dp"
+                android:layout_gravity="center"
+                android:clickable="true"
+                android:src="@drawable/chetverti"
+
+                app:layout_constraintVertical_bias="0.456" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,9 @@
 package com.example.programandroid;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,9 +12,13 @@ import android.widget.EditText;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONObject;
 
@@ -30,7 +37,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
-
+    private String FCMtoken;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +48,37 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        requestNotificationPermission();
     }
 
+    private void requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // Android 13+
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                getFCMToken(); // Само ако разрешението е дадено
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
+            }
+        } else {
+            getFCMToken(); // За Android < 13 не се изисква разрешение
+        }
+    }
+
+    private void getFCMToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        //Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                        return;
+                    }
+                    // Вземи токена
+                    String token = task.getResult();
+                    Log.d("Mainnn", "FCM Token: " + token);
+                    FCMtoken = token;
+
+                    // Изпрати токена към сървъра
+                    //sendTokenToServer(token);
+                });
+    }
     public class SecureRequest {
         private static final String TAG = "SecureRequest";
         private final OkHttpClient client;
@@ -70,11 +106,14 @@ public class MainActivity extends AppCompatActivity {
 
         public void sendSecureRequest(String username, String password) {
             String url = "http://10.0.2.2:8000/api/token/";
+//            String url = "http://192.168.1.7:8000/api/token/";
 
             JSONObject json = new JSONObject();
             try {
                 json.put("username", username);
                 json.put("password", password);
+                json.put("FCMtoken", FCMtoken);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

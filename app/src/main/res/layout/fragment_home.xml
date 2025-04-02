@@ -15,7 +15,7 @@
         android:fontFamily="sans-serif-condensed"
         android:text="Добре дошъл отново, "
         android:textAlignment="center"
-        android:textColor="@color/material_dynamic_neutral30"
+        android:textColor="@android:color/black"
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -72,11 +72,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.274" />
 
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
         android:text="Предстоящи занятия:"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -117,6 +117,4 @@
 
     </androidx.cardview.widget.CardView>
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>
-

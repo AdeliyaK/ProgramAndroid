@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.programandroid.R;
+import com.example.programandroid.TokenManager;
 
 import java.util.ArrayList;
 
@@ -71,6 +72,9 @@ public class ProgramFragment extends Fragment {
             adapterListView_.notifyDataSetChanged();
         });
 
+        TokenManager tokenManager = new TokenManager(this.getContext());
+        String accessToken = tokenManager.getAccessToken();
+        programViewModel.fetchSchedule(accessToken);
         return view;
     }
 }

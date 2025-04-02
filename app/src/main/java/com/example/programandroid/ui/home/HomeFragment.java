@@ -1,6 +1,7 @@
 package com.example.programandroid.ui.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.programandroid.R;
+import com.example.programandroid.TokenManager;
 import com.example.programandroid.ui.home.HomeViewModel;
 
 public class HomeFragment extends Fragment {
@@ -47,6 +49,14 @@ public class HomeFragment extends Fragment {
             futureActivitiesTextView.setText(activities);
         });
 
+        TokenManager tokenManager = new TokenManager(this.getContext());
+        String accessToken = tokenManager.getAccessToken();
+        if (accessToken != null) {
+            homeViewModel.fetchUserInfo(accessToken);
+            homeViewModel.fetchUserActivities(accessToken);
+        } else {
+            Log.e("HomeScreen", "Access Token липсва!");
+        }
         return rootView;
     }
 }

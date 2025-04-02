@@ -1,17 +1,19 @@
-package com.example.programandroid.ui.slideshow;
+package com.example.programandroid.ui.contacts;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SlideshowViewModel extends ViewModel {
+public class ContactViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public SlideshowViewModel() {
+    public ContactViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is slideshow fragment");
     }
+
+
 
     public LiveData<String> getText() {
         return mText;
