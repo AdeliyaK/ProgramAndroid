@@ -23,6 +23,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
@@ -38,6 +40,7 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
     private String FCMtoken;
+    private static String accessToken;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
         requestNotificationPermission();
+
     }
 
     private void requestNotificationPermission() {
@@ -67,21 +71,19 @@ public class MainActivity extends AppCompatActivity {
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(task -> {
                     if (!task.isSuccessful()) {
-                        //Log.w(TAG, "Fetching FCM registration token failed", task.getException());
                         return;
                     }
                     // Вземи токена
                     String token = task.getResult();
                     Log.d("Mainnn", "FCM Token: " + token);
                     FCMtoken = token;
-
-                    // Изпрати токена към сървъра
-                    //sendTokenToServer(token);
                 });
     }
+
     public class SecureRequest {
         private static final String TAG = "SecureRequest";
         private final OkHttpClient client;
+        private String accessToken;
 
         public SecureRequest() {
             client = getSecureOkHttpClient();
@@ -106,13 +108,12 @@ public class MainActivity extends AppCompatActivity {
 
         public void sendSecureRequest(String username, String password) {
             String url = "http://10.0.2.2:8000/api/token/";
-//            String url = "http://192.168.1.7:8000/api/token/";
+
 
             JSONObject json = new JSONObject();
             try {
                 json.put("username", username);
                 json.put("password", password);
-                json.put("FCMtoken", FCMtoken);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -157,12 +158,8 @@ public class MainActivity extends AppCompatActivity {
                                     tokenManager.saveAccessToken(jsonResponse.getString("access"));
                                     tokenManager.saveRefreshToken(jsonResponse.getString("refresh"));
 
-
-//                                    new AlertDialog.Builder(MainActivity.this)
-//                                            .setTitle("Успех")
-//                                            .setMessage("Успешен вход!")
-//                                            .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
-//                                            .show();
+                                    accessToken = tokenManager.getAccessToken();
+                                    saveFCMToken(FCMtoken);
 
 
                                     startActivity(new Intent(MainActivity.this, Navigation.class).putExtra("name", username));
@@ -192,4 +189,38 @@ public class MainActivity extends AppCompatActivity {
         SecureRequest secureRequest = new SecureRequest();
         secureRequest.sendSecureRequest(username, password);
     }
+
+
+    public static void saveFCMToken(String FCMtoken) {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            String url = "http://10.0.2.2:8000/api/user-fcm-token/";
+
+            OkHttpClient client = new OkHttpClient();
+
+            // Създаване на JSON тяло
+            MediaType JSON = MediaType.get("application/json; charset=utf-8");
+            String jsonBody = "{\"fcm-token\": \"" + FCMtoken + "\"}";
+            RequestBody body = RequestBody.create(jsonBody, JSON);
+
+            // Изграждане на PUT заявката
+            Request request = new Request.Builder()
+                    .url(url)
+                    .addHeader("Authorization", "Bearer " + accessToken)
+                    .post(body)
+                    .build();
+
+            // Изпращане на заявката
+            try (Response response = client.newCall(request).execute()) {
+                if (!response.isSuccessful()) {
+                    Log.e("TESTTAG", "Request failed: " + response.code() + " " + response.message());
+                } else {
+                    Log.d("TESTTAG", "Response: " + response.body().string());
+                }
+            } catch (IOException e) {
+                Log.e("TESTTAG", "Error sending request", e);
+            }
+        });
+    }
+
 }
