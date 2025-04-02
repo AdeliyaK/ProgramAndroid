@@ -1,4 +1,4 @@
-# Student Assistant App  
+# Student Program App  
 
 Student Program App is a mobile solution designed to help students efficiently manage their academic schedules, receive real-time notifications, and stay up to date with important university events. The system consists of an Android mobile application and a Django-based backend, ensuring seamless communication and automation of notifications.  
 
